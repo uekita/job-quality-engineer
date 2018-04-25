@@ -1,6 +1,6 @@
 # Intelipost: Teste prático para analista de qualidade e testes
 
-Este é o teste usado por nós aqui da Intelipost para avaliar tecnicamente os candidatos a nossas vagas de analista de testes. Se você estiver participando de um processo seletivo para nossa equipe, certamente em algum momento receberá este link, mas caso você tenha chego aqui "por acaso", sinta-se convidado a desenvolver nosso teste e enviar uma mensagem para nós no e-mail lucas.teixeira@intelipost.com.br.
+Este é o teste usado por nós aqui da Intelipost para avaliar tecnicamente os candidatos a nossas vagas de analista de testes. Se você estiver participando de um processo seletivo para nossa equipe, certamente em algum momento receberá este link, mas caso você tenha chego aqui "por acaso", sinta-se convidado a desenvolver nosso teste e enviar uma mensagem para nós nos e-mails `stefan.rehm@intelipost.com.br` e `gustavo.hideyuki@intelipost.com.br`.
 
 Aqui na Intelipost nós aplicamos este mesmo teste para as vagas em todos os níveis, ou seja, um candidato a uma vaga de analista de testes junior fará o mesmo teste de um outro candidato a uma vaga sênior, mudando obviamente o nosso critério de avaliação do resultado do teste.
 
