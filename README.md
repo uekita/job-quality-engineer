@@ -1,55 +1,111 @@
+
 # Intelipost: Teste prático para analista de qualidade e testes
 
-Este é o teste usado por nós aqui da Intelipost para avaliar tecnicamente os candidatos a nossas vagas de analista de testes. Se você estiver participando de um processo seletivo para nossa equipe, certamente em algum momento receberá este link, mas caso você tenha chego aqui "por acaso", sinta-se convidado a desenvolver nosso teste e enviar uma mensagem para nós nos e-mails `stefan.rehm@intelipost.com.br` e `gustavo.hideyuki@intelipost.com.br`.
+Teste prático para o cargo de analista de qualidade e testes criado pela Intelispost.
+Principais dificuldades:
+* Validação do respostas. Foi necessário um pouco de pesquisa para, por exemplo, extrair uma lista de valores. Não existem muitos exemplos de uso para extrair valores de JSON usando o GPATH. Na verdade, existem diversas formas de validar e extrair valores de um JSON usando outras bibliotecas, o problema foi encontrar uma que apresentasse a forma mais simples para ser parametrizável numa step definition.
+* Validação de JSON schema. (método criado, mas não implantado, pois nenhum campo no JSON de retorno é obrigatório para a api )
+* Criação de step definitions reaproveitáveis. Criar métodos genéricos implica um pouco mais de trabalho do que implementar uma step definition mais específica.
 
-Aqui na Intelipost nós aplicamos este mesmo teste para as vagas em todos os níveis, ou seja, um candidato a uma vaga de analista de testes junior fará o mesmo teste de um outro candidato a uma vaga sênior, mudando obviamente o nosso critério de avaliação do resultado do teste.
+## Análise do teste
 
-Nós fazemos isso esperando que as pessoas mais iniciantes entendam qual o modelo de profissional que temos por aqui e que buscamos para o nosso time. Portanto, se você estiver se candidatando a uma vaga mais iniciante, não se assuste, e faça o melhor que você puder!
+Para criar o framework de teste automatizado em java escolhi criar um projeto do tipo maven por:
+* Ser uma ferramenta padrão para aplicações java;
+* Facilidade de se trabalhar com depedências, basta adicionar a dependencia ao *pom.xml*;
+* Ao criar um projeto do tipo maven, já é montado automaticamente uma estrutura de pacotes (incluindo uma de testes).
 
-## Instruções
+### Testando RESTful APIs
 
-Você deverá criar um fork deste projeto, e desenvolver em cima do seu fork. Use o `README` principal do seu repositório para nos contar como foi resolver seu teste, as decisões tomadas, como você organizou e separou seus testes, e principalmente as instruções de como rodar seu projeto, afinal a primeira pessoa que irá rodar seu projeto será um programador de nossa equipe, e se você conseguir explicar para ele como fazer isso, você já começou bem!
+Para testar as APIs utilizei a biblioteca [REST-assured](http://rest-assured.io/). A sua implementação é simples, possui verbos de BDD (when, given, etc), e possui métodos para validar respostas em JSON.
 
-Lembre-se que este é um teste técnico e não um concurso público, portanto, não existe apenas uma resposta correta. Mostre que você é bom e nos impressione, mas não esqueça do objetivo do projeto. Nós não definimos um tempo limite para resolução deste teste, o que vale para nós e o resultado final e a evolução da criação do projeto até se atingir este resultado.
+### Estrutura
 
-## O desafio
+O projeto foi estruturado da seguinte forma:
+```
+|---src
+|	\---test
+|	|	|---\java
+|	|	|	\---\br
+|	|	|		\---com\
+|	|	|			\---intelipost
+|	|	|				|---api
+|	|	|				|	|---steps
+|	|	|				|	|	|---Hooks.java
+|	|	|				|	|	\---RESTAssuredSteps.java
+|	|	|				|	\---RESTAssured.java	
+|	|	|				\---support
+|	|	|					|---ConfigurationProperties.java
+|	|	|					|---CucumberRerport.java
+|	|	|					\---CucumberRunner.java
+|	\---\resources
+|		\---\features
+|			\---\api
+|		 		\---CriarCotacaoPorProduto.feature
+|---jmeter
+|	\---SC01
+|		|---\dados
+|		|	\---SC01.csv
+|		\---CriarCotacaoPorProduto.jmx
+|---Automation.rar	
+|---config.properties
+\---pom.xml
+```
 
-Você será o responsável pelo desenvolvimento dos testes automatizados da nossa API de cotação a fim de cobrir alguns requisitos da `Loja Intelipost` (loja fictícia), temos uma documentação publica (https://docs.intelipost.com.br/v1/cotacao) para que voce consiga entender como vai realizar as requisições. Use esta documentação para ler sobre os parâmetros de entrada e saída, afinal serão importantíssimos para a validação dos seus testes. Nessa fase voce automatizará as cotações de frete por produto descritas no link https://docs.intelipost.com.br/v1/cotacao/criar-cotacao-por-produto .
+* Um pacote com os fontes do framework
+	* classes de suporte (Runner, Report, Configuration)
+	*  implemetação de steps e a Hooks
+* Uma pasta chamada 'resources' para armazenamento das features
+* Um pasta para armazenar os scripts do Jmeter
 
-Para as requisições que você for fazer na API, utilize a api key **4aa90b1087807b5fb8e52b01584f84e416ddb8ab8e5b800ae5d0f075a2d1e379**
+Foi criado um pacote independete para APIs, pois caso seja necessário criar um framework para automação de UI, basta adicionar um outro pacote 'ui', aproveitando a mesma estrutura. Caso exista um teste integrado a implementação já estará organizado num mesmo projeto.
 
- ## Para conhecimento
+## Relatório de execução
 
-A `Loja Intelipost` possui diversos canais de vendas, recebendo milhares de cotações de frete em todo o País. Para garantir que o cliente receba sua encomenda rapidamente, a Loja Intelipost possui quatro endereços de origem:
+Foi utilizado o [Cucumber Reporting](https://github.com/damianszczepanik/cucumber-reporting), pois ele é organiza os cenários em features, tags, steps e separa os cenários falhos, além de ser visualmente mais agradável e intuitivo que o report html do plugin do cucumber-jvm. Ele possui também um plugin para no Jenkins.
 
-| Origem | Estado | CEP |
-| ------------- | ------------- | ------------- |
-| Origem 1  | Espirito Santo  | 29010-120 |
-| Origem 2  | Tocantins  | 77001-054 |
-| Origem 3  | Mato Grosso  | 78005-170 |
-| Origem 4  | Rio Grande do Sul  | 94090-720 |
+## Como executar
+### Configurando a execução
+O teste é parametrizado através de um arquivo de configurações -*Configuration.properties*- que é apresentado da seguinte forma:
+```
+feature=src/test/resources/features/api/criarCotacaoPorProduto.feature
+steps=br.com.intelipost.api.steps
+tag=@SC05
+projectName=Teste API Intelipost
+openReportAfterTest=true
+reportPath=C:/Reports
+```
+* **feature** - obrigatório - Caminho da feature relativo a pasta do framework
+* **steps** - obrigatório - Caminho do pacote das classes com as implemetações das steps da feature
+* **tag** - opcional - Anotação a ser procurada na feature. Se utilizar mais de uma tag, adicionar vírgula. Ex.: @positivo,@negativo
+* **projectName** - obrigatório - Nome do projeto que irá ser apresentado no relatório de execução
+* **openReportAfterTest** - opcional - Abre o relatório de execução automaticamente após a execução. (Só funciona em Windows)
+*  **reportPath** - opcional - Define o caminho do relatório de execução. Se deixado vazio será criado uma pasta Reports na raiz da pasta do projeto.
 
-## Cobertura dos testes
+Por que utilizar um arquivo de configuração?
+Para ser simples a execução e configurável para qualquer pessoa com um mínimo de instrução de utilização. Os parâmetros precisam ficar em código. E o arquivo pode ser lido, por exemplo, pelo Jenkins num job do tipo Maven.
 
-* A Loja Intelipost deixou de atuar nos canais de vendas **CN1** e **CN2**, portanto se houver uma requisição oriunda dos canais de vendas (_sales_channel_) **CN1** ou **CN2**, é esperado que não haja opções de entrega no resultado da cotação.
+### Executando
+Formas:
+1. Através de uma IDE - Importar o projeto, configurar os parâmetros de execução do *Configuration.properties*, que está na raiz do projeto e executar o método main da classe CucumberRunner;
+2. Extrair o arquivo *Automation.rar* para qualquer diretório, configurar os parâmetros de execução no *Configuration.properties* e executar o arquivo executar_windows.bat ou executar_linux.sh de acordo com o sistema operacional.
 
-* A Loja Intelipost espera que não haja opções de entrega caso, na cotação de frete, o cep de origem seja de **Tocantins** e o cep de destino esteja localizado na **Região Sudeste** do País.
+Após a execução o relatório será gerado na raiz do projeto dentro da pasta *Reports* com a data e hora da execução. Obs: Ao abir a pasta do relatório, selecionar o arquivo 'overview-features.html', pois ele apresenta uma visão geral da execução.
 
-* O canal de vendas **CN123**, não deve disponibilizar a opção de entrega **Correios PAC** caso o cep de destino esteja entre as faixas de cep _22710-010_ e _22710-990_.
+## Criação de cenários
+Para criar os cenários de teste utilizei os principais os seguintes recursos do cucumber:
+1. **Background** - Permite a execução de steps antes de cada cenário como uma pré-condição de cada tete. Utilizei para incluir as headers.
+2. **Scenario Outline** - Para executar um mesmo cenário utilizando parâmetros diferentes, evitando duplicação de cenários. Seu uso foi essêncial para todos os cenários.
 
-* Todas as cotações de frete, independente do canal de vendas, cujo o destino seja o estado do **Pará**, o prazo de entrega esperado é de 20 dias.
+## Classe executora
+Crie uma classe executora utilizando o CLI Runner. Dessa forma é possível realizar ações antes (como ler o arquivo de configurações) e depois do teste (como gerar o relatório, rodar scripts, etc). A execução via cucumber-Junit não possui uma implementação funcional de @beforeAll e @afterAll.
+## Links que me ajudaram :thumbsup: 
 
-* Cotações cujo o SKU (identificador) do produto seja **SKU123** não deve disponibilizar a opção de entrega **Correios PAC**.
-
-Com as informações acima, sua atividade será a criação de um conjunto de testes a fim de garantir que tais situações estão ocorrendo conforme o esperado.
-
-### O que nós esperamos do seu teste:
-
-* Possua um bom nível de cobertura
-* Seja feito o uso de BDD
-* Possua clareza na escrita dos testes
-* Possua um report simples onde possamos entender as possíveis falhas ocorridas na execução dos testes
-* Seja produzido em _Java_ (Java 8 de preferência)
-* Possua informações para que possamos entender o que e como foi desenvolvido
-* Possua informações de como executar os testes
-* Escolha ao menos um dos seus testes e crie-o utilizando Jmeter
+Some examples of REST-assured - https://blog.jayway.com/2013/04/12/whats-new-in-rest-assured-1-8/
+A brief explanation how Gpath works - http://groovy-lang.org/processing-xml.html#_gpath
+A brief intro to Json https://dzone.com/articles/understanding-basic-json
+Usage examples of groovy Json gpath - http://james-willett.com/2017/05/rest-assured-gpath-json/
+Examples of rest-Assured examples - https://www.joecolantonio.com/2014/04/24/rest-assured-how-to-post-a-json-request/
+A great example of bdd for web api testing with REST-Assured - http://angiejones.tech/rest-assured-with-cucumber-using-bdd-for-web-services-automation/
+A overview of rest-Assured - https://gorillalogic.com/blog/automation-testing-part-2-api-testing-rest-assured/
+Rest-assured guide - https://github.com/rest-assured/rest-assured/wiki/Usage#specifying-request-data
+Rest-assured usage - https://www.swtestacademy.com/api-testing-with-rest-assured/
