@@ -59,4 +59,9 @@ public class RESTAssuredSteps {
 	public void eu_valido_JSON_schema_da_resposta(String JSON) {
 		request.validateJSONSchema(JSON);
 	}
+	
+	@Given("Eu adiciono a descrição da request \"([^\"]*)\"$")
+	public void eu_adiciono_a_descricao_da_request(String descricao) {
+		Hooks.write(descricao);
+	}
 }

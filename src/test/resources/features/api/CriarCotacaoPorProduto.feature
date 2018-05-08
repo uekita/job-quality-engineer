@@ -1603,3 +1603,162 @@ Scenario: Validação de JSON schema de uma requisição com erro
 	  }
 	}
 	"""
+	
+@positivo @SC10
+Scenario Outline: Verificar cotação de produto, utilizando parâmetros válidos
+	Given Eu adiciono a descrição da request "<descricao>"
+	And Eu adiciono a request body
+	"""
+	{
+	  "origin_zip_code": "<origin_zip_code>",
+	  "destination_zip_code": "<destination_zip_code>",
+	  "quoting_mode": "DYNAMIC_BOX_ALL_ITEMS",
+	  "products": [
+	    {
+	      "weight": 5,
+	      "cost_of_goods": 10.7,
+	      "width": 15,
+	      "height": 17.5,
+	      "length": 15,
+	      "quantity": 1,
+	      "sku_id": "SKU123",
+	      "product_category": "Bebidas"
+	    },
+	    {
+	      "weight": 7,
+	      "cost_of_goods": 20.99,
+	      "width": 20.5,
+	      "height": 30.7,
+	      "length": 20,
+	      "quantity": 1,
+	      "sku_id": "SKU123",
+	      "product_category": "Bebidas"
+	    }
+	  ],
+	  "additional_information": {
+	    "lead_time_business_days": 1,
+	    "sales_channel": "CN123",
+	    "client_type": "gold"
+	  },
+	  "identification": {
+	    "session": "04e5bdf7ed15e571c0265c18333b6fdf1434658753",
+	    "ip": "000.000.000.000",
+	    "page_name": "carrinho",
+	    "url": "http://www.intelipost.com.br/checkout/cart/"
+	  }
+	}
+	"""
+	When Eu envio a request do tipo "POST" com a URL "https://api.intelipost.com.br/api/v1/quote_by_product"
+	Then O codigo de resposta deve ser "200"
+	
+	Examples:
+|origin_zip_code	|destination_zip_code	|descricao|
+|29010120			|69900000				|Espirito Santo para Acre|
+|29010120			|57000001				|Espirito Santo para Alagoas|
+|29010120			|68900002				|Espirito Santo para Amapá|
+|29010120			|69000003				|Espirito Santo para Amazonas|
+|29010120			|40000004				|Espirito Santo para Bahia|
+|29010120			|60000005				|Espirito Santo para Ceará|
+|29010120			|70000006				|Espirito Santo para Distrito Federal|
+|29010120			|29000007				|Espirito Santo para Espírito Santo|
+|29010120			|74000008				|Espirito Santo para Goiás|
+|29010120			|65000009				|Espirito Santo para Maranhão|
+|29010120			|78000010				|Espirito Santo para Mato Grosso|
+|29010120			|79000011				|Espirito Santo para Mato Grosso do sul|
+|29010120			|30000012				|Espirito Santo para Minas Gerais|
+|29010120			|66000013				|Espirito Santo para Pará|
+|29010120			|58000014				|Espirito Santo para Paraíba|
+|29010120			|80000015				|Espirito Santo para Paraná|
+|29010120			|50000015				|Espirito Santo para Pernambuco|
+|29010120			|64000016				|Espirito Santo para Piauí|
+|29010120			|20000017				|Espirito Santo para Rio de Janeiro|
+|29010120			|59000019				|Espirito Santo para Rio Grande do Norte|
+|29010120			|90000020				|Espirito Santo para Rio Grande do Sul|
+|29010120			|78900021				|Espirito Santo para Rondônia|
+|29010120			|69300022				|Espirito Santo para Roraima|
+|29010120			|88000023				|Espirito Santo para Santa Catarina|
+|29010120			|08000024				|Espirito Santo para São Paulo|
+|29010120			|49000025				|Espirito Santo para Sergipe|
+|29010120			|77000026				|Espirito Santo para Tocantins|
+|77001054			|69900000				|Tocantins para Acre|
+|77001054			|57000001				|Tocantins para Alagoas|
+|77001054			|68900002				|Tocantins para Amapá|
+|77001054			|69000003				|Tocantins para Amazonas|
+|77001054			|40000004				|Tocantins para Bahia|
+|77001054			|60000005				|Tocantins para Ceará|
+|77001054			|70000006				|Tocantins para Distrito Federal|
+|77001054			|29000007				|Tocantins para Espírito Santo|
+|77001054			|74000008				|Tocantins para Goiás|
+|77001054			|65000009				|Tocantins para Maranhão|
+|77001054			|78000010				|Tocantins para Mato Grosso|
+|77001054			|79000011				|Tocantins para Mato Grosso do sul|
+|77001054			|30000012				|Tocantins para Minas Gerais|
+|77001054			|66000013				|Tocantins para Pará|
+|77001054			|58000014				|Tocantins para Paraíba|
+|77001054			|80000015				|Tocantins para Paraná|
+|77001054			|50000015				|Tocantins para Pernambuco|
+|77001054			|64000016				|Tocantins para Piauí|
+|77001054			|20000017				|Tocantins para Rio de Janeiro|
+|77001054			|59000019				|Tocantins para Rio Grande do Norte|
+|77001054			|90000020				|Tocantins para Rio Grande do Sul|
+|77001054			|78900021				|Tocantins para Rondônia|
+|77001054			|69300022				|Tocantins para Roraima|
+|77001054			|88000023				|Tocantins para Santa Catarina|
+|77001054			|08000024				|Tocantins para São Paulo|
+|77001054			|49000025				|Tocantins para Sergipe|
+|77001054			|77000026				|Tocantins para Tocantins|
+|78005170			|69900000				|Mato Grosso para Acre|
+|78005170			|57000001				|Mato Grosso para Alagoas|
+|78005170			|68900002				|Mato Grosso para Amapá|
+|78005170			|69000003				|Mato Grosso para Amazonas|
+|78005170			|40000004				|Mato Grosso para Bahia|
+|78005170			|60000005				|Mato Grosso para Ceará|
+|78005170			|70000006				|Mato Grosso para Distrito Federal|
+|78005170			|29000007				|Mato Grosso para Espírito Santo|
+|78005170			|74000008				|Mato Grosso para Goiás|
+|78005170			|65000009				|Mato Grosso para Maranhão|
+|78005170			|78000010				|Mato Grosso para Mato Grosso|
+|78005170			|79000011				|Mato Grosso para Mato Grosso do sul|
+|78005170			|30000012				|Mato Grosso para Minas Gerais|
+|78005170			|66000013				|Mato Grosso para Pará|
+|78005170			|58000014				|Mato Grosso para Paraíba|
+|78005170			|80000015				|Mato Grosso para Paraná|
+|78005170			|50000015				|Mato Grosso para Pernambuco|
+|78005170			|64000016				|Mato Grosso para Piauí|
+|78005170			|20000017				|Mato Grosso para Rio de Janeiro|
+|78005170			|59000019				|Mato Grosso para Rio Grande do Norte|
+|78005170			|90000020				|Mato Grosso para Rio Grande do Sul|
+|78005170			|78900021				|Mato Grosso para Rondônia|
+|78005170			|69300022				|Mato Grosso para Roraima|
+|78005170			|88000023				|Mato Grosso para Santa Catarina|
+|78005170			|08000024				|Mato Grosso para São Paulo|
+|78005170			|49000025				|Mato Grosso para Sergipe|
+|78005170			|77000026				|Mato Grosso para Tocantins|
+|94090720			|69900000				|Rio Grande do Sul para Acre|
+|94090720			|57000001				|Rio Grande do Sul para Alagoas|
+|94090720			|68900002				|Rio Grande do Sul para Amapá|
+|94090720			|69000003				|Rio Grande do Sul para Amazonas|
+|94090720			|40000004				|Rio Grande do Sul para Bahia|
+|94090720			|60000005				|Rio Grande do Sul para Ceará|
+|94090720			|70000006				|Rio Grande do Sul para Distrito Federal|
+|94090720			|29000007				|Rio Grande do Sul para Espírito Santo|
+|94090720			|74000008				|Rio Grande do Sul para Goiás|
+|94090720			|65000009				|Rio Grande do Sul para Maranhão|
+|94090720			|78000010				|Rio Grande do Sul para Mato Grosso|
+|94090720			|79000011				|Rio Grande do Sul para Mato Grosso do sul|
+|94090720			|30000012				|Rio Grande do Sul para Minas Gerais|
+|94090720			|66000013				|Rio Grande do Sul para Pará|
+|94090720			|58000014				|Rio Grande do Sul para Paraíba|
+|94090720			|80000015				|Rio Grande do Sul para Paraná|
+|94090720			|50000015				|Rio Grande do Sul para Pernambuco|
+|94090720			|64000016				|Rio Grande do Sul para Piauí|
+|94090720			|20000017				|Rio Grande do Sul para Rio de Janeiro|
+|94090720			|59000019				|Rio Grande do Sul para Rio Grande do Norte|
+|94090720			|90000020				|Rio Grande do Sul para Rio Grande do Sul|
+|94090720			|78900021				|Rio Grande do Sul para Rondônia|
+|94090720			|69300022				|Rio Grande do Sul para Roraima|
+|94090720			|88000023				|Rio Grande do Sul para Santa Catarina|
+|94090720			|08000024				|Rio Grande do Sul para São Paulo|
+|94090720			|49000025				|Rio Grande do Sul para Sergipe|
+|94090720			|77000026				|Rio Grande do Sul para Tocantins|
+							
