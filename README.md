@@ -100,12 +100,12 @@ Para criar os cenários de teste utilizei os principais os seguintes recursos do
 Crie uma classe executora utilizando o CLI Runner. Dessa forma é possível realizar ações antes (como ler o arquivo de configurações) e depois do teste (como gerar o relatório, rodar scripts, etc). A execução via cucumber-Junit não possui uma implementação funcional de @beforeAll e @afterAll.
 ## Links que me ajudaram :thumbsup: 
 
-Some examples of REST-assured - https://blog.jayway.com/2013/04/12/whats-new-in-rest-assured-1-8/
-A brief explanation how Gpath works - http://groovy-lang.org/processing-xml.html#_gpath
-A brief intro to Json https://dzone.com/articles/understanding-basic-json
-Usage examples of groovy Json gpath - http://james-willett.com/2017/05/rest-assured-gpath-json/
-Examples of rest-Assured examples - https://www.joecolantonio.com/2014/04/24/rest-assured-how-to-post-a-json-request/
-A great example of bdd for web api testing with REST-Assured - http://angiejones.tech/rest-assured-with-cucumber-using-bdd-for-web-services-automation/
-A overview of rest-Assured - https://gorillalogic.com/blog/automation-testing-part-2-api-testing-rest-assured/
-Rest-assured guide - https://github.com/rest-assured/rest-assured/wiki/Usage#specifying-request-data
-Rest-assured usage - https://www.swtestacademy.com/api-testing-with-rest-assured/
+* Some examples of REST-assured - https://blog.jayway.com/2013/04/12/whats-new-in-rest-assured-1-8/
+* A brief explanation how Gpath works - http://groovy-lang.org/processing-xml.html#_gpath
+* A brief intro to Json https://dzone.com/articles/understanding-basic-json
+* Usage examples of groovy Json gpath - http://james-willett.com/2017/05/rest-assured-gpath-json/
+* Examples of rest-Assured examples - https://www.joecolantonio.com/2014/04/24/rest-assured-how-to-post-a-json-request/
+* A great example of bdd for web api testing with REST-Assured - http://angiejones.tech/rest-assured-with-cucumber-using-bdd-for-web-services-automation/
+* A overview of rest-Assured - https://gorillalogic.com/blog/automation-testing-part-2-api-testing-rest-assured/
+* Rest-assured guide - https://github.com/rest-assured/rest-assured/wiki/Usage#specifying-request-data
+* Rest-assured usage - https://www.swtestacademy.com/api-testing-with-rest-assured/
