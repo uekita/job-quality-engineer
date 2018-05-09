@@ -70,13 +70,12 @@ public class CucumberRunner {
 		if (ConfigurationProperties.getProperty("openReportAfterTest").equalsIgnoreCase("true")) {
 			String os = System.getProperty("os.name").toLowerCase();
 			try {
+				File file = new File(getLastReportPath() + "/cucumber-html-reports/overview-features.html");
+				String AbsoluteFilePath = file.getAbsolutePath();
 				if (os.contains("windows")) {
-					Runtime rt = Runtime.getRuntime();
-					File file = new File(getLastReportPath() + "/cucumber-html-reports/overview-features.html");
-					String AbsoluteFilePath = file.getAbsolutePath();
-					rt.exec("rundll32 url.dll,FileProtocolHandler " + "file:///" + AbsoluteFilePath);
+					Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + "file:///" + AbsoluteFilePath);
 				} else {
-					// TODO implementar para linux
+					Runtime.getRuntime().exec("xdg-open " + AbsoluteFilePath);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
